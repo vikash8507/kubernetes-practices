@@ -1,3 +1,0 @@
-https://kubernetes.io/docs/reference/kubectl/cheatsheet/
-https://kubernetes.io/docs/reference/kubectl/
-https://docs.google.com/document/d/1MEihQMmvRcoYGhMej_wSpm2m1mh6gMKd9jeC_QWX_Vg/edit

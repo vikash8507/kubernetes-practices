@@ -1,0 +1,57 @@
+# Kubernetive API Verion
+# ex:- v1 for pod and service, apps/v1 for ReplicaSet and Deployment
+apiVersion: 
+
+# Type of kubernet objects
+# ex:- pod, service, replicaset, deployment
+kind:
+
+# Medata data about object of kubernetes
+# ex: name, labels, env etc
+metadata:
+  name: Name
+  labels:
+    key1: value1
+    key2: value2
+    ...
+  environment:
+    key1: value1
+    key2: value2
+
+# Additional info about an object of kubernete
+# array of dict
+spec:
+  containers:
+  - name: nginx-container
+    image: ngnix
+
+
+# To run this file
+# kubectl create -f pods.yml
+
+# List all the pods
+# kubectl get pods
+
+# Describe a pod
+# kubectl describe pod pod-name
+
+# Delete a pod
+# kubectl delete pod pod-name
+
+# Modify the running pod
+# kubectl apply -f pod-definition.yml
+
+################
+  A Note on Editing Existing Pods
+  In any of the practical quizzes if you are asked to edit an existing POD, please note the following:
+
+  If you are given a pod definition file, edit that file and use it to create a new pod.
+
+  If you are not given a pod definition file, you may extract the definition to a file using the below command:
+
+  kubectl get pod <pod-name> -o yaml > pod-definition.yaml
+
+  Then edit the file to make the necessary changes, delete and re-create the pod.
+
+  Use the kubectl edit pod <pod-name> command to edit pod properties.
+##################
