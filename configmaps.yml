@@ -1,0 +1,77 @@
+# kubectl create configmap <configmap_name> \
+#                 --from-literal=<key1>=<value1> --from-literal=<key1>=<value1>
+# kubectl create configmap <configmap_name> --from-literal=<path_to_file>
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config-map
+data:
+  APP_COLOR: Green
+  APP_MODE: dev
+
+
+# Create config map
+# kubectl create -f configmapa.yml
+
+# List config maps
+# kubectl get configmaps
+
+# Describe config maps
+# kubectl describe configmaps 
+
+
+---
+# Config Map with PODS
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp
+  labels:
+    name: myapp
+spec:
+  containers:
+  - name: myapp
+    image: nginx
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 80
+    envFrom:
+      - configMapRef:
+          name: config-map-name
+    env:
+      - name: env-name
+        valueFrom:
+          configMapKeyRef:
+            name: config-map-name
+            key: config-map-key
+
+---
+# Config Map with Volumes
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mypv
+spec:
+  capacity:
+    storage: "128Mi"
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: slow
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:
+    path: /tmp
+    server: 172.17.0.2
+  volumes:
+    - name: config-map-volume-name
+      configMap:
+        name: config-map-name
