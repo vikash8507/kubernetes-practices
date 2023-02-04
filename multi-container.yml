@@ -1,0 +1,72 @@
+# Three multi containers pods desgin pattern
+# 1. Sidecar, 2. Adapter, 3. Ambassador
+
+# Logs of a POD
+# kubectl logs pod_name
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simple-webapp
+  labels:
+    name: simple-webapp
+spec:
+  containers:
+  - name: simple-webapp
+    image: simple-webapp
+    command:
+      - ""
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 8080
+  - name: log-agent
+    image: log-agent
+    resources:
+      limits:
+        memory: "28Mi"
+        cpu: "50m"
+
+# Edit the pod to add a sidecar container to send logs to Elastic Search. Mount the log volume to the sidecar container.
+
+# Only add a new container. Do not modify anything else. Use the spec provided below.
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app
+  namespace: elastic-stack
+  labels:
+    name: app
+spec:
+  containers:
+  - name: app
+    image: kodekloud/event-simulator
+    resources:
+      limits:
+        memory: "28Mi"
+        cpu: "50m"
+    volumeMounts:
+    - mountPath: /log
+      name: log-volume
+
+  - name: sidecar
+    image: kodekloud/filebeat-configured
+    resources:
+      limits:
+        memory: "28Mi"
+        cpu: "50m"
+    volumeMounts:
+    - mountPath: /var/log/event-simulator/
+      name: log-volume
+
+  volumes:
+  - name: log-volume
+    hostPath:
+      # directory location on host
+      path: /var/log/webapp
+      # this field is optional
+      type: DirectoryOrCreate
