@@ -1,6 +1,6 @@
 # kubectl create configmap <configmap_name> \
 #                 --from-literal=<key1>=<value1> --from-literal=<key1>=<value1>
-# kubectl create configmap <configmap_name> --from-literal=<path_to_file>
+# kubectl create configmap <configmap_name> --from-file=<path_to_file>
 
 apiVersion: v1
 kind: ConfigMap
@@ -18,7 +18,7 @@ data:
 # kubectl get configmaps
 
 # Describe config maps
-# kubectl describe configmaps 
+# kubectl describe configmaps <config-map-name>
 
 
 ---
